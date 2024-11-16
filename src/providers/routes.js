@@ -1,27 +1,17 @@
-// src/providers/route.js
-import React, { Suspense } from 'react';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import Loaders from '../components/Loaders/Loaders.jsx';
+import React from 'react';
+import { createBrowserRouter } from 'react-router-dom';
+const Dashboard = React.lazy(() => import('../pages/Dashboard/Dashboard.jsx'));
+const NotFound=React.lazy(()=>import( '../components/Erorr/NotFound.jsx'));
 
-const App = React.lazy(() => import('../App.js'));
-const NotFound = React.lazy(() => import('../components/Erorr/Error.jsx'));
-
-const router = createBrowserRouter([
+const routes = createBrowserRouter([
   {
     path: '/',
-    element: <App />,
+    element: <Dashboard />,
   },
   {
     path: '*',
     element: <NotFound />,
   },
-
 ]);
 
-const SuspendedRouter = () => (
-  <Suspense fallback={<Loaders/>}>
-    <RouterProvider router={router} />
-  </Suspense>
-);
-
-export default SuspendedRouter;
+export default routes;
