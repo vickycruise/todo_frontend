@@ -9,9 +9,9 @@ import store from './store/store';
 function App() {
   return (
     <Provider store={store}>
-    <Suspense fallback={<Loaders />}>
-      <RouterProvider router={routes} />
-    </Suspense>
+      <Suspense fallback={<Loaders />}>
+        <RouterProvider router={routes} />
+      </Suspense>
     </Provider>
   );
 }
