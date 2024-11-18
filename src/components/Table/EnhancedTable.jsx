@@ -7,10 +7,11 @@ const EnhancedTable = ({
   handleDelete,
   handleEdit,
 }) => {
-  const [tasks, setTasks] = useState();
+  const [tasks, setTasks] = useState(initialTasks);
   const [editingTask, setEditingTask] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [showdesc, setShowdesc] = useState(false);
+
   useEffect(() => {
     setTasks(initialTasks);
   }, [initialTasks]);
@@ -38,18 +39,12 @@ const EnhancedTable = ({
 
   const handleSaveEdit = (data) => {
     console.log(data, "data");
-    if (editingTask) {
-      handleEdit(editingTask);
+    if (data) {
+      handleEdit(data);
       setShowModal(false);
       setEditingTask(null);
     }
   };
-
-  // const handleChangeTaskInput = (e) => {
-  //   const task = { description: e.target.value };
-  //   setEditingTask((prv) => ({ ...prv, ...task }));
-  //   console.log(task);
-  // };
 
   return (
     <div className="container mt-5">
@@ -61,13 +56,14 @@ const EnhancedTable = ({
             <th>id</th>
             <th>Title</th>
             <th>Description</th>
+            <th>Time</th>
             <th>Completed</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           {tasks &&
-            tasks.map((task, i) => (
+            tasks?.map((task, i) => (
               <tr key={task.id}>
                 <td>{i}</td>
                 <td
@@ -78,6 +74,7 @@ const EnhancedTable = ({
                   {task.title}
                 </td>
                 <td>{task.description}</td>
+                <td>{task.time}</td>
                 <td>
                   <Button
                     variant={task.isCompleted ? "success" : "warning"}

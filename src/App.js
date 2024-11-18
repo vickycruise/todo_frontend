@@ -23,7 +23,7 @@ function App() {
         theme="light"
       />
       <Suspense fallback={<Loaders />}>
-        <RouterProvider router={routes} />
+        <RouterProvider router={routes} future={{ v7_startTransition: true }} />
       </Suspense>
     </Provider>
   );

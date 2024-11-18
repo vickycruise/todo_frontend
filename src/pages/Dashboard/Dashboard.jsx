@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import EnhancedTable from "../../components/Table/EnhancedTable";
 import {
   useAddTodoMutation,
@@ -11,8 +11,8 @@ import TaskComponent from "../../components/Table/TaskComponent";
 
 const Dashboard = () => {
   const [task, setTask] = useState([]);
-
-  const { data: todos } = useFetchTodosQuery({ uid: "1" });
+  const ref = useRef();
+  const { data: todos, refetch } = useFetchTodosQuery({ uid: "1" });
   const [addTodo, { isLoading: todoloading, error: todoerror }] =
     useAddTodoMutation();
   const [updateTodo, { isLoading, error }] = useUpdateTodoMutation();
@@ -56,9 +56,12 @@ const Dashboard = () => {
   const handleEdit = async (task) => {
     console.log(task, "edittask");
     try {
-      const updatedTask = await updateTodo(task).unwrap();
+      const data = JSON.stringify(task);
+      const updatedTask = await updateTodo({ data }).unwrap();
+
       console.log("Task updated successfully:", updatedTask);
-      setTask(updatedTask);
+      toast.success("Task updated successfully");
+      refetch();
     } catch (error) {
       console.error("Error updating task:", error);
     }

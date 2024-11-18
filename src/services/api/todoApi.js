@@ -23,10 +23,10 @@ export const todoApi = createApi({
     }),
 
     updateTodo: builder.mutation({
-      query: ({ id, updatedTodo }) => ({
-        url: `/todo/${id}`,
+      query: (data) => ({
+        url: `/todo/update`,
         method: "PUT",
-        body: updatedTodo,
+        body: data,
       }),
     }),
 

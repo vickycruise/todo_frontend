@@ -9,16 +9,7 @@ const Header = () => {
       <header className="header">
         <Navbar className=" bg-primary">
           <Container>
-            <Navbar.Brand href="/">
-              <img
-                alt=""
-                src="/img/logo.svg"
-                width="30"
-                height="30"
-                className="d-inline-block align-top"
-              />{" "}
-              MY TODO
-            </Navbar.Brand>
+            <Navbar.Brand href="/"> MY TODO</Navbar.Brand>
           </Container>
         </Navbar>
       </header>
