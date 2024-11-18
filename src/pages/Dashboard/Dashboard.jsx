@@ -1,48 +1,76 @@
-import React, { useState, useTransition } from 'react';
-import EnhancedTable from '../../components/Table/EnhancedTable';
-import { Button, Form } from 'react-bootstrap';
+import React, { useEffect, useState } from "react";
+import EnhancedTable from "../../components/Table/EnhancedTable";
+import {
+  useAddTodoMutation,
+  useDeleteTodoMutation,
+  useFetchTodosQuery,
+  useUpdateTodoMutation,
+} from "../../services/api/todoApi";
+import { toast } from "react-toastify";
+import TaskComponent from "../../components/Table/TaskComponent";
 
 const Dashboard = () => {
-  const initialTasks = [
-    { id: 1, task: 'Complete React project', isCompleted: false },
-    { id: 2, task: 'Read a book', isCompleted: false },
-  ];
-  
-  const [task, setTask] = useState(initialTasks);
-  const [newTask, setNewTask] = useState('');
-  const [isPending, startTransition] = useTransition();
+  const [task, setTask] = useState([]);
 
-  const handleAddTask = () => {
-    if (newTask.trim()) {
+  const { data: todos } = useFetchTodosQuery({ uid: "1" });
+  const [addTodo, { isLoading: todoloading, error: todoerror }] =
+    useAddTodoMutation();
+  const [updateTodo, { isLoading, error }] = useUpdateTodoMutation();
+
+  const [deleteTodo] = useDeleteTodoMutation();
+
+  const handleAddTask = async (data) => {
+    if (data) {
       const newTaskObject = {
-        id: Date.now(),
-        task: newTask,
+        uid: 1,
+        title: data.title,
+        description: data.description,
+        time: data.time,
         isCompleted: false,
       };
-
-      // Deferring the state update using startTransition
-      startTransition(() => {
-        setTask((prevTasks) => [...prevTasks, newTaskObject]);
-      });
-
-      setNewTask(''); // Reset input value after adding task
+      try {
+        const result = await addTodo(newTaskObject).unwrap();
+        toast("Todo added Successfully");
+        setTask((prevTasks) => [...prevTasks, result]);
+      } catch (error) {
+        toast.error("Failed to add task.");
+      }
     }
   };
+  const handleDelete = async (id) => {
+    try {
+      await deleteTodo(id).unwrap();
 
+      setTask((prevTasks) => prevTasks.filter((task) => task.id !== id));
+
+      toast.success("Todo deleted successfully");
+    } catch (error) {
+      toast.error("Failed to delete task.");
+    }
+  };
+  useEffect(() => {
+    if (todos) {
+      setTask(todos);
+    }
+  }, [todos]);
+  const handleEdit = async (task) => {
+    console.log(task, "edittask");
+    try {
+      const updatedTask = await updateTodo(task).unwrap();
+      console.log("Task updated successfully:", updatedTask);
+      setTask(updatedTask);
+    } catch (error) {
+      console.error("Error updating task:", error);
+    }
+  };
   return (
     <div className="container mt-4">
-      <div className="mb-3">
-        <Form.Control
-          type="text"
-          placeholder="Add new task"
-          value={newTask}
-          onChange={(e) => setNewTask(e.target.value)}
-        />
-        <Button variant="primary" className="mt-2" onClick={handleAddTask} disabled={isPending}>
-          {isPending ? 'Adding...' : 'Add Task'}
-        </Button>
-      </div>
-      <EnhancedTable tasks={task} />
+      <TaskComponent handleSubmits={handleAddTask} />
+      <EnhancedTable
+        tasks={task}
+        handleDelete={handleDelete}
+        handleEdit={handleEdit}
+      />
     </div>
   );
 };

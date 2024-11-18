@@ -1,8 +1,12 @@
-import { createStore, applyMiddleware } from 'redux';
-import rootReducer from './reducers/rootReducer';
-// import thunk from 'redux-thunk';
-import logger from './middlewares/logger';
+import { configureStore } from "@reduxjs/toolkit";
+import { todoApi } from "../services/api/todoApi";
 
-const store = createStore(rootReducer, applyMiddleware( logger));
+const store = configureStore({
+  reducer: {
+    [todoApi.reducerPath]: todoApi.reducer,
+  },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(todoApi.middleware),
+});
 
 export default store;
