@@ -9,7 +9,18 @@ const Header = () => {
       <header className="header">
         <Navbar className=" bg-primary">
           <Container>
-            <Navbar.Brand href="/"> MY TODO</Navbar.Brand>
+            <Navbar.Brand href="/">
+              {new Date().toLocaleString("en-US", {
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+                hour12: true,
+                weekday: "short",
+                month: "short",
+                day: "numeric",
+                year: "numeric",
+              })}
+            </Navbar.Brand>
           </Container>
         </Navbar>
       </header>

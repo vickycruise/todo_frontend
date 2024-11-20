@@ -67,6 +67,9 @@ const Dashboard = () => {
   };
   return (
     <div className="container mt-4">
+      <h1 class="text-primary border border-primary p-3 rounded text-center">
+        Create Todo
+      </h1>
       <TaskComponent handleSubmits={handleAddTask} />
       <EnhancedTable
         tasks={task}

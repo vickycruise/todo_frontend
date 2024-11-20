@@ -74,7 +74,19 @@ const EnhancedTable = ({
                   {task.title}
                 </td>
                 <td>{task.description}</td>
-                <td>{task.time}</td>
+                <td >
+                  {" "}
+                  {new Date(task.time).toLocaleString("en-US", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    second: "2-digit",
+                    hour12: true,
+                    weekday: "short",
+                    month: "short",
+                    day: "numeric",
+                    year: "numeric",
+                  })}
+                </td>
                 <td>
                   <Button
                     variant={task.isCompleted ? "success" : "warning"}
