@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import EnhancedTable from "../../components/Table/EnhancedTable";
 import {
   useAddTodoMutation,
@@ -11,11 +11,10 @@ import TaskComponent from "../../components/Table/TaskComponent";
 
 const Dashboard = () => {
   const [task, setTask] = useState([]);
-  const ref = useRef();
+
   const { data: todos, refetch } = useFetchTodosQuery({ uid: "1" });
-  const [addTodo, { isLoading: todoloading, error: todoerror }] =
-    useAddTodoMutation();
-  const [updateTodo, { isLoading, error }] = useUpdateTodoMutation();
+  const [addTodo] = useAddTodoMutation();
+  const [updateTodo] = useUpdateTodoMutation();
 
   const [deleteTodo] = useDeleteTodoMutation();
 
